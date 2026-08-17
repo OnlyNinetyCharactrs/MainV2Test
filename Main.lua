@@ -98,9 +98,11 @@ InjectButton.Visible = false
 local Games = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://raw.githubusercontent.com/RealZzHub/MainV2/main/SupportedGames.json", true))
 local isUniversal = false
 
-if Games[tostring(game.GameId)] ~= nil then
-    InjectButton.Text = Games[tostring(game.GameId)].Name
-    path1 = Games[tostring(game.GameId)].Path
+local currentId = tostring(game.PlaceId)
+
+if Games[currentId] ~= nil then
+    InjectButton.Text = Games[currentId].Name
+    path1 = Games[currentId].Path
 else
     InjectButton.Text = "Universal"
     isUniversal = true
