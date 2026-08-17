@@ -26,6 +26,7 @@ if setclipboard then
         Text = "Copied Discord invite to clipboard!"
     })
 end
+
 local RealZzHub = Instance.new("ScreenGui")
 RealZzHub.Name = "RealZzHub"
 RealZzHub.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -96,16 +97,17 @@ InjectButton.TextWrapped = true
 InjectButton.Visible = false
 
 local Games = game:GetService("HttpService"):JSONDecode(game:HttpGet("https://raw.githubusercontent.com/RealZzHub/MainV2/main/SupportedGames.json", true))
-local isUniversal = false
+local path1 = "KaijuPD.lua" -- Default path override
 
 local currentId = tostring(game.PlaceId)
 
+-- MODIFIED: Check game list, but default button label and script target to KaijuPD if not found
 if Games[currentId] ~= nil then
     InjectButton.Text = Games[currentId].Name
     path1 = Games[currentId].Path
 else
-    InjectButton.Text = "Universal"
-    isUniversal = true
+    InjectButton.Text = "Kaiju Paradise" -- Replaced "Universal" label
+    path1 = "KaijuPD.lua" -- Forces KaijuPD path when unlisted
 end
 
 UICorner.CornerRadius = UDim.new(0, 4)
@@ -157,33 +159,30 @@ function Close()
     Logo.Visible = false
     Version.Visible = false
     RenderStepped:Disconnect()
-    wait(0.2)
-    MainBackground:TweenSize(UDim2.new(0, 1, 0, 1))	
-    wait(0.8)
+    task.wait(0.2)
+    MainBackground:TweenSize(UDim2.new(0, 1, 0, 1))    
+    task.wait(0.8)
     MainBackground.Visible = false
     RealZzHub:Destroy()   
 end
 
 CloseButton.MouseButton1Down:Connect(Close)
 Logo.MouseButton1Down:Connect(function()
-    ClickedNum = ClickedNum + 1 -- Easter egg 😨
+    ClickedNum = ClickedNum + 1
 end)
 
+-- MODIFIED: Executes KaijuPD.lua directly instead of checking Universal logic
 InjectButton.MouseButton1Down:Connect(function()
-	Close()
-    if isUniversal then
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/RealZzHub/MainV2/main/Games/Universal.lua'))()
-    else
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/RealZzHub/MainV2/main/Games/' .. path1))()
-    end
+    Close()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RealZzHub/MainV2/main/Games/' .. path1))()
 end)
 
 MainBackground.AnchorPoint = Vector2.new(0.5, 0.5)
-MainBackground.Position = UDim2.new(0.5, 0, 0.5, 0)	
-MainBackground.Visible = true	
-wait(0.8)	
-MainBackground:TweenSize(UDim2.new(0, 318, 0, 150))	
-wait(1)	
+MainBackground.Position = UDim2.new(0.5, 0, 0.5, 0)    
+MainBackground.Visible = true    
+task.wait(0.8)    
+MainBackground:TweenSize(UDim2.new(0, 318, 0, 150))    
+task.wait(1)    
 CloseButton.Visible = true
 InjectButton.Visible = true
 Name.Visible = true
